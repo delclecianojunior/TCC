@@ -1,5 +1,4 @@
 
-
 void setup() {
  InicializarPinosMotor();
 }
@@ -19,5 +18,5 @@ void FecharJanela(){
 }
 
 void AbrirJanela(){
-   GirarParaEsquera(2);
+  GirarParaEsquera(2); 
 }

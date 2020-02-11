@@ -34,6 +34,10 @@ void GirarParaEsquera(int delayTime){
   delay(delayTime); 
 }
 
+void PararMotor(){
+  EnergizarPinos(LOW,LOW,LOW, LOW);
+}
+
 void EnergizarPinos(int statusPino1, int statusPino2, int statusPino3, int statusPino4){
   digitalWrite(motorPin1, statusPino1);
   digitalWrite(motorPin2, statusPino2);
