@@ -1,17 +1,9 @@
+
 int motorPin1 = 8;
 int motorPin2 = 9;
 int motorPin3 = 10;
 int motorPin4 = 11;
 int delayTime = 10;
-
-void setup() {
- InicializarPinosMotor();
-}
-
-void loop() { 
- GirarParaDireita(2);
- //GirarParaEsquera(5);
-}
 
 void InicializarPinosMotor(){
   pinMode(motorPin1, OUTPUT);
