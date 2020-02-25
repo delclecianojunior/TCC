@@ -1,9 +1,14 @@
-int pinoSensorUmidade = 1;
+int sensorChuvaPinD7 = 7;
 
-bool VerificarSeEstaChovendo(){
-  int valorUmidade = analogRead(pinoSensorUmidade);
+void InicializarPinosSensorCuva() {
+  pinMode(sensorChuvaPinD7, INPUT);
+}
 
-  if(valorUmidade > 270)
+bool VerificarSeEstaChovendo() {
+  int valorUmidadeDigital = digitalRead(sensorChuvaPinD7);
+
+  if (valorUmidadeDigital <= 0)
     return true;
-  return false;  
+
+  return false;
 }

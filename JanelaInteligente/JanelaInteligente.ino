@@ -1,22 +1,25 @@
 
 void setup() {
- InicializarPinosMotor();
+  //InicializarPinosMotor();
+  InicializarPinosSensorCuva();
+  Serial.begin(9600);
 }
 
-void loop() { 
-  Serial.begin(9600);
-  
-  if(VerificarSeEstaChovendo()){
-    FecharJanela();
-  }else{
-    AbrirJanela();
+void loop() {
+  if (VerificarSeEstaChovendo()) {
+    Serial.println("Esta chovendo...");
+    // FecharJanela();
+  } else {
+    Serial.println("parou de chover...");
+    //AbrirJanela();
+    // PararMotor();
   }
 }
 
-void FecharJanela(){
-   GirarParaDireita(2);
+void FecharJanela() {
+  GirarParaDireita(2);
 }
 
-void AbrirJanela(){
-  GirarParaEsquera(2); 
+void AbrirJanela() {
+  GirarParaEsquera(2);
 }
