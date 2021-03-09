@@ -1,13 +1,13 @@
 #include <UIPEthernet.h>
 
 byte mac[] = {0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED};
-byte ip[] = {192, 168, 15, 175};
+byte ip[] = {192, 168, 1, 101}; // Coloquei o ultimo sendo 2 porque o que finalizava coms ja estava separado pro gateway
 
 EthernetServer server(80);
 
+int sensorChuvaPin = 7;
 int botaoAbrir = 8;
 int statusBotaoAbrir = 0;
-
 int botaoFechar = 9;
 int statusBotaoFechar = 0;
 
@@ -24,10 +24,19 @@ void setup()
     statusBotaoFechar = 0;
     digitalWrite(botaoAbrir, LOW);
     digitalWrite(botaoFechar, HIGH);
+    pinMode(sensorChuvaPin, INPUT);
+    //Serial.begin(3600);
 }
 
 void loop()
 {
+    if (VerificarSeEstaChovendo()) //Se esta chovendo ele fecha a janela , mas so se ela tiver aberta
+    {
+        _fecharJanela();
+    }
+
+    bool estaChovendo = VerificarSeEstaChovendo();
+
     EthernetClient client = server.available();
 
     if (!client)
@@ -70,10 +79,10 @@ void lerValoresDaRequisicao(EthernetClient client, char c)
 void controlarJanela()
 {
     abrirJanela();
-    fecharJanela();
+    fecharJanela(); //esta invocando o metodo do fecha janela da interface web , o que esta com underline e o do sensor
 }
 
-void abrirJanela()
+void abrirJanela() 
 {
     if (readString.indexOf("abrir=1") > 0)
     {
@@ -85,16 +94,21 @@ void abrirJanela()
     }
 }
 
-void fecharJanela()
+void fecharJanela() // fecha a janela pelo html ou melhor pela interface web
 {
     if (readString.indexOf("abrir=0") > 0)
     {
-        digitalWrite(botaoFechar, HIGH);
-        statusBotaoFechar = 1;
-
-        digitalWrite(botaoAbrir, LOW);
-        statusBotaoAbrir = 0;
+        _fecharJanela();
     }
+}
+
+void _fecharJanela()
+{
+    digitalWrite(botaoFechar, HIGH);
+    statusBotaoFechar = 1;
+
+    digitalWrite(botaoAbrir, LOW);
+    statusBotaoAbrir = 0;
 }
 
 void construirBotaoAbrir(EthernetClient client)
@@ -149,4 +163,13 @@ void construirCorpoDaPagina(EthernetClient client)
 void construirFinalDaPagina(EthernetClient client)
 {
     client.println("</body></html>");
+}
+
+bool VerificarSeEstaChovendo()
+{
+    int valorUmidadeDigital = digitalRead(sensorChuvaPin);
+    if (valorUmidadeDigital <= 0)
+        return true;
+
+    return false;
 }
